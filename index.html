@@ -142,17 +142,17 @@
             theme: {
                 button: {
                     backgroundColor: "#DBA979",
-                    
+
                 },
                 chatWindow: {
-                        userMessage: {
-                            backgroundColor: "#DBA979",
-                        },
-                        textInput: {
-                            sendButtonColor: "#DBA979",
-                        },
-                        poweredByTextColor: "rgba(255,255,255,0)",
-                    }
+                    userMessage: {
+                        backgroundColor: "#DBA979",
+                    },
+                    textInput: {
+                        sendButtonColor: "#DBA979",
+                    },
+                    poweredByTextColor: "rgba(255,255,255,0)",
+                }
             }
         })
     </script>
@@ -200,8 +200,11 @@
 
         function pauseMedia() {
             video.pause();
+            video.style.display = 'none';
             video2a.pause();
+            video.style.display = 'none';
             video2b.pause();
+            video.style.display = 'none';
             animationIntervalList.forEach(item => clearInterval(item));
             animationIntervalList = [];
             didAgent.style.display = 'block';
@@ -217,12 +220,15 @@
 
         function resumeMedia() {
             didAgent.style.display = 'none';
-            if (video2a.style.display === 'block' && video2a.currentTime > 0 && !video2a.paused && !video2a.ended) {
+            if (video2a.style.display === 'none' && video2a.currentTime > 0 && !video2a.paused && !video2a.ended) {
                 video2a.play();
-            } else if (video2b.style.display === 'block' && video2b.currentTime > 0 && !video2b.paused && !video2b.ended) {
+                video2a.style.display = 'block';
+            } else if (video2b.style.display === 'none' && video2b.currentTime > 0 && !video2b.paused && !video2b.ended) {
                 video2b.play();
+                video2b.style.display = 'block';
             } else {
                 video.play();
+                video.style.display = 'block';
             }
             pausedTimers.forEach((timer, index) => {
                 const id = setTimeout(timer.callback, remainingTimes[index]);
@@ -458,10 +464,13 @@
         document.getElementById('resumeButton').addEventListener('click', resumeMedia);
     </script>
 
-    <!-- <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
+
+    <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
         data-client-key="Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0"
         data-agent-id="agt_mSHLSjhZ">
-        </script> -->
+            data - monitor="true"
+        </script>
+
 </body>
 
 </html>
