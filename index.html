@@ -137,21 +137,22 @@
     <script type="module">
         import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
         Chatbot.init({
-            chatflowid: "ab216a9f-e88a-4e7d-b1d0-3b4ee2b2c62e",
+            chatflowid: "1bd493c5-2cf6-49c7-8d2b-d1faabe7344e",
             apiHost: "http://localhost:3000",
-        
             theme: {
                 button: {
                     backgroundColor: "#DBA979",
-                    chatWindow: {
+                    
+                },
+                chatWindow: {
                         userMessage: {
                             backgroundColor: "#DBA979",
                         },
                         textInput: {
                             sendButtonColor: "#DBA979",
-                        }
+                        },
+                        poweredByTextColor: "rgba(255,255,255,0)",
                     }
-                }
             }
         })
     </script>
@@ -247,10 +248,7 @@
             clearTimers();
             setCustomTimeout(() => {
                 continueButton.classList.remove('hidden');
-            }, 75000);
-            setCustomTimeout(() => {
-                linksContainer.classList.remove('hidden');
-            }, 150000);
+            }, 60000);
         }
 
         startButton.addEventListener('click', () => {
@@ -274,7 +272,7 @@
             numberRange.classList.remove('hidden');
             pauseIndex = -1;
             sum = 0;
-            animateMeanCalculation(newDataSet);
+
             video2a.currentTime = 0;
             video2b.currentTime = 0;
             video.style.display = 'none';
@@ -285,7 +283,13 @@
                 video2b.style.display = 'block';
                 video2b.play();
             };
+
             initializeTimers();
+
+            setCustomTimeout(() => {
+                linksContainer.classList.remove('hidden');
+            }, 60000);
+            animateMeanCalculation(newDataSet);
             sum = 0;
         });
 
@@ -306,6 +310,7 @@
 
             setCustomTimeout(() => {
                 if (!isPaused) {
+                    numberRange.classList.remove('hidden');
                     numberRange.textContent = 'Dataset: ' + dataSet.join(', ');
                     numberRange.animate([
                         { transform: `translate(0, 0)` },
@@ -316,7 +321,7 @@
                         easing: 'ease-out'
                     });
                 }
-            }, 5000);
+            }, 3000);
 
             formulaContainer.classList.remove('hidden');
             setCustomTimeout(() => {
@@ -336,7 +341,7 @@
             setCustomTimeout(() => {
                 if (!isPaused) {
                     //displayNumbersSequentially(dataSet, animationContainer, () => { });
-
+                    animationContainer.classList.remove('hidden');
                     formulaContainer.classList.add('hidden');
                     dataSet.forEach((number, index) => {
                         let intervalID = setTimeout(() => {
@@ -391,7 +396,7 @@
 
                 }
 
-            }, 15000);
+            }, 22000);
             showCalculationDetails(dataSet, calculationContainer);
 
         }
@@ -406,14 +411,12 @@
 
             setCustomTimeout(() => {
                 if (!isPaused) {
-                    animationContainer.classList.add('hidden');
                     container.classList.remove('hidden');
-                    container.innerHTML = `<br/>Sum = ${sum}<br/><br/>Count = ${count}<br/><br/>`;
+                    container.innerHTML = `Sum = ${sum}<br/><br/>Count = ${count}<br/><br/>`;
                 }
-            }, 20000);
+            }, 35000);
             setCustomTimeout(() => {
                 if (!isPaused) {
-                    animationContainer.classList.add('hidden');
                     container.classList.remove('hidden');
                     container.innerHTML += `
                     <br/><div style="display: flex; align-items: center; margin-top: 20px;">
@@ -425,10 +428,9 @@
                                 </div>
                             </div>`;
                 }
-            }, 25000);
+            }, 47000);
             setCustomTimeout(() => {
                 if (!isPaused) {
-                    animationContainer.classList.add('hidden');
                     container.classList.remove('hidden');
                     container.innerHTML += `
                     <br/><div style="display: flex; align-items: center; margin-top: 20px;">
@@ -440,26 +442,26 @@
                                 </div>
                             </div>`;
                 }
-            }, 30000);
+            }, 52000);
 
             setCustomTimeout(() => {
                 // console.log(sum/count, typeof sum, typeof count);
                 if (!isPaused) {
-                    animationContainer.classList.add('hidden');
                     container.classList.remove('hidden');
                     container.innerHTML += `<br/><div><br/><br/>Mean Value = ${(sum / count).toFixed(2)}<br/><br/></div>`;
                 }
-            }, 35000);
+
+            }, 55000);
         }
 
         document.getElementById('pauseImage').addEventListener('click', pauseMedia);
         document.getElementById('resumeButton').addEventListener('click', resumeMedia);
     </script>
 
-    <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
+    <!-- <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
         data-client-key="Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0"
         data-agent-id="agt_mSHLSjhZ">
-        </script>
+        </script> -->
 </body>
 
 </html>
