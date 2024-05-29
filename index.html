@@ -122,7 +122,7 @@
             z-index: 1000;
         }
 
-        #didAgent {
+        .didAgent {
             position: absolute;
             left: -50px;
             top: 60%;
@@ -161,7 +161,7 @@
     <div id="formulaContainer" class="hidden"></div>
     <div id="animationContainer"></div>
     <div id="calculationContainer" class="hidden"></div>
-    <video id="meanVideo" src="Mean_Video1.mp4"></video>
+   <video id="meanVideo" src="Mean_Video1.mp4"></video>
     <video id="meanVideo2a" src="Mean_Video2a.mp4" hidden></video>
     <video id="meanVideo2b" src="Mean_Video2b.mp4" hidden></video>
     <div id="didAgent"></div>
@@ -182,13 +182,14 @@
         const video = document.getElementById('meanVideo');
         const video2a = document.getElementById('meanVideo2a');
         const video2b = document.getElementById('meanVideo2b');
-        const didAgent = document.getElementById('agt_mSHLSjhZ');
+        const didAgent = document.getElementByClassName('didagent__fabio');
         const pauseImage = document.getElementById('pauseImage');
         const pauseMessage = document.getElementById('pauseMessage');
         const resumeButton = document.getElementById('resumeButton');
         const startButton = document.getElementById('startButton');
         const continueButton = document.getElementById('continueButton');
         const linksContainer = document.getElementById('linksContainer');
+        didAgent.classList.add('didAgent');
         let timers = [];
         let pausedTimers = [];
         let remainingTimes = [];
@@ -464,13 +465,10 @@
         document.getElementById('resumeButton').addEventListener('click', resumeMedia);
     </script>
 
-
     <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
         data-client-key="Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0"
         data-agent-id="agt_mSHLSjhZ">
-            data - monitor="true"
         </script>
-
 </body>
 
 </html>
