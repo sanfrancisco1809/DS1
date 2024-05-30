@@ -161,7 +161,7 @@
     <div id="formulaContainer" class="hidden"></div>
     <div id="animationContainer"></div>
     <div id="calculationContainer" class="hidden"></div>
-   <video id="meanVideo" src="Mean_Video1.mp4"></video>
+    <video id="meanVideo" src="Mean_Video1.mp4"></video>
     <video id="meanVideo2a" src="Mean_Video2a.mp4" hidden></video>
     <video id="meanVideo2b" src="Mean_Video2b.mp4" hidden></video>
     <div id="didAgent"></div>
@@ -189,8 +189,12 @@
         const startButton = document.getElementById('startButton');
         const continueButton = document.getElementById('continueButton');
         const linksContainer = document.getElementById('linksContainer');
-        didAgent.classList.add('didAgent');
-        didAgent.style.display = 'none';
+        //didAgent.classList.add('didAgent');
+        //didAgent.style.display = 'none';
+        for (let i = 0; i < didAgent.length; i++) {
+            didAgent[i].classList.add('didAgent');
+            didAgent[i].style.display = 'none';
+        }
         let timers = [];
         let pausedTimers = [];
         let remainingTimes = [];
@@ -209,7 +213,10 @@
             video.style.display = 'none';
             animationIntervalList.forEach(item => clearInterval(item));
             animationIntervalList = [];
-            didAgent.style.display = 'block';
+            //didAgent.style.display = 'block';
+            for (let i = 0; i < didAgent.length; i++) {
+                didAgent[i].style.display = 'block';
+            }
             timers.forEach((timer, index) => {
                 clearTimeout(timer.id);
                 pausedTimers.push(timer);
@@ -221,7 +228,10 @@
         }
 
         function resumeMedia() {
-            didAgent.style.display = 'none';
+            for (let i = 0; i < didAgent.length; i++) {
+                didAgent[i].style.display = 'block';
+            }
+            //didAgent.style.display = 'none';
             if (video2a.style.display === 'none' && video2a.currentTime > 0 && !video2a.paused && !video2a.ended) {
                 video2a.play();
                 video2a.style.display = 'block';
