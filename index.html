@@ -131,6 +131,15 @@
             /* display: none; */
             border: 1px solid black;
         }
+
+        .didAgent-mask {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 20rem;
+            height: 15rem;
+            background-color: 1px solid rgb(0, 0, 0, 0);
+        }
     </style>
 </head>
 
@@ -179,6 +188,7 @@
         <button id="resumeButton">Resume</button>
     </div>
     <div id="iframeContainer" class="did-Agent"></div>
+    <div id="didAgentMask" class="didAgent-mask"></div>
     <script>
         const video = document.getElementById('meanVideo');
         const video2a = document.getElementById('meanVideo2a');
@@ -190,6 +200,7 @@
         const startButton = document.getElementById('startButton');
         const continueButton = document.getElementById('continueButton');
         const linksContainer = document.getElementById('linksContainer');
+        const didAgentMask = document.getElementById('didAgentMask');
         // didAgent.classList.add('didAgent');
         let timers = [];
         let pausedTimers = [];
@@ -201,7 +212,7 @@
         let lastHighlighted = null;
 
         function pauseMedia() {
-            addIframe();
+            // addIframe();
             video.pause();
             video.style.display = 'none';
             video2a.pause();
@@ -211,6 +222,7 @@
             animationIntervalList.forEach(item => clearInterval(item));
             animationIntervalList = [];
             // didAgent.style.display = 'block';
+            didAgentMask.style.display = 'none';
             timers.forEach((timer, index) => {
                 clearTimeout(timer.id);
                 pausedTimers.push(timer);
@@ -222,8 +234,9 @@
         }
 
         function resumeMedia() {
-            removeIframe();
+            // removeIframe();
             // didAgent.style.display = 'none';
+            didAgentMask.style.display = 'block';
             if (video2a.style.display === 'none' && video2a.currentTime > 0 && !video2a.paused && !video2a.ended) {
                 video2a.play();
                 video2a.style.display = 'block';
@@ -466,34 +479,7 @@
 
         document.getElementById('pauseImage').addEventListener('click', pauseMedia);
         document.getElementById('resumeButton').addEventListener('click', resumeMedia);
-        function addIframe() {
-            var iframe = document.createElement('iframe');
-            iframe.id = 'dynamicIframe';
-            // iframe.style.width = '100%';
-            // iframe.style.height = '400px';
-            iframe.classList.add('didAgent');
-            iframe.srcdoc = '<!DOCTYPE html><html><head></head><body></body></html>';
 
-            iframe.onload = function () {
-                var script = document.createElement('script');
-                script.type = 'module';
-                script.src = 'https://agent.d-id.com/v1/index.js';
-                script.setAttribute('data-name', 'did-agent');
-                script.setAttribute('data-mode', 'fabio');
-                script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0');
-                script.setAttribute('data-agent-id', 'agt_mSHLSjhZ');
-                iframe.contentDocument.body.appendChild(script);
-            };
-
-            document.getElementById('iframeContainer').appendChild(iframe);
-        }
-
-        function removeIframe() {
-            var existingIframe = document.getElementById('dynamicIframe');
-            if (existingIframe) {
-                existingIframe.parentNode.removeChild(existingIframe);
-            }
-        }
     </script>
 
     <!-- <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
