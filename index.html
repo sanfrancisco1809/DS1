@@ -177,47 +177,19 @@
         <p>Type out your question in the chat window or click on the mic to ask your question.</p>
         <button id="resumeButton">Resume</button>
     </div>
-
+    <div id="iframeContainer" class = "didAgent"></div>
     <script>
         const video = document.getElementById('meanVideo');
         const video2a = document.getElementById('meanVideo2a');
         const video2b = document.getElementById('meanVideo2b');
-        const didAgent = document.querySelectorAll('[data-testid="your_test_id"]');// document.getElementsByClassName('didagent_target');
+        // const didAgent = document.getElementsByClassName('didagent__fabio');
         const pauseImage = document.getElementById('pauseImage');
         const pauseMessage = document.getElementById('pauseMessage');
         const resumeButton = document.getElementById('resumeButton');
         const startButton = document.getElementById('startButton');
         const continueButton = document.getElementById('continueButton');
         const linksContainer = document.getElementById('linksContainer');
-        //didAgent.classList.add('didAgent');
-        //didAgent.style.display = 'none';
-        let desiredElementReference = null;
-
-        // function handleElementAdded(mutationsList, observer) {
-        //     mutationsList.forEach(mutation => {
-        //         if (mutation.type === 'childList') {
-        //             const addedNodes = Array.from(mutation.addedNodes);
-        //             addedNodes.forEach(node => {
-        //                 const desiredElement = node.querySelector('[data-testid="didagent_fabio_button"]');
-        //                 if (desiredElement) {
-        //                     desiredElementReference.style.display = "none";
-        //                     desiredElementReference = desiredElement;
-        //                 }
-        //             });
-        //         }
-        //     });
-        // }
-
-        // const targetNode = document.body;
-        // const config = { childList: true, subtree: true };
-        // const observer = new MutationObserver(handleElementAdded);
-        // observer.observe(targetNode, config);
-        if (desiredElementReference)
-            desiredElementReference.style.display = 'none';
-        for (let i = 0; i < didAgent.length; i++) {
-            didAgent[i].classList.add('didAgent');
-            didAgent[i].style.display = 'none';
-        }
+        // didAgent.classList.add('didAgent');
         let timers = [];
         let pausedTimers = [];
         let remainingTimes = [];
@@ -226,9 +198,9 @@
         let sum = 0;
         let animationIntervalList = [];
         let lastHighlighted = null;
-        // const bodyElement = wholeDocument.body;
 
         function pauseMedia() {
+            addIframe();
             video.pause();
             video.style.display = 'none';
             video2a.pause();
@@ -237,13 +209,7 @@
             video.style.display = 'none';
             animationIntervalList.forEach(item => clearInterval(item));
             animationIntervalList = [];
-            //didAgent.style.display = 'block';
-            addScript();
-            if (desiredElementReference)
-                desiredElementReference.style.display = 'block';
-            for (let i = 0; i < didAgent.length; i++) {
-                didAgent[i].style.display = 'block';
-            }
+            // didAgent.style.display = 'block';
             timers.forEach((timer, index) => {
                 clearTimeout(timer.id);
                 pausedTimers.push(timer);
@@ -255,13 +221,8 @@
         }
 
         function resumeMedia() {
-            removeScript();
-            if (desiredElementReference)
-                desiredElementReference.style.display = 'none';
-            for (let i = 0; i < didAgent.length; i++) {
-                didAgent[i].style.display = 'block';
-            }
-            //didAgent.style.display = 'none';
+            removeIframe();
+            // didAgent.style.display = 'none';
             if (video2a.style.display === 'none' && video2a.currentTime > 0 && !video2a.paused && !video2a.ended) {
                 video2a.play();
                 video2a.style.display = 'block';
@@ -501,36 +462,35 @@
 
             }, 55000);
         }
-        function addScript() {
 
-            var existingScript = document.getElementById('didAgentScript');
-            if (!existingScript) {
-
-                var script = document.createElement('script');
-
-                script.type = 'module';
-                script.src = 'https://agent.d-id.com/v1/index.js';
-                script.setAttribute('data-name', 'did-agent');
-                script.setAttribute('data-mode', 'fabio');
-                script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0');
-    script.setAttribute('data-agent-id', 'agt_mSHLSjhZ');
-                script.id = 'didAgentScript';
-
-                document.body.appendChild(script);
-            }
-        }
-
-
-        function removeScript() {
-
-            var script = document.getElementById('didAgentScript');
-
-            if (script) {
-                script.parentNode.removeChild(script);
-            }
-        }
         document.getElementById('pauseImage').addEventListener('click', pauseMedia);
         document.getElementById('resumeButton').addEventListener('click', resumeMedia);
+        function addIframe() {
+            var iframe = document.createElement('iframe');
+            iframe.id = 'dynamicIframe';
+            iframe.style.width = '100%';
+            iframe.style.height = '400px';
+
+            iframe.srcdoc = '<!DOCTYPE html><html><head></head><body></body></html>';
+
+            document.getElementById('iframeContainer').appendChild(iframe);
+
+            var script = document.createElement('script');
+            script.type = 'module';
+            script.src = 'https://agent.d-id.com/v1/index.js';
+            script.setAttribute('data-name', 'did-agent');
+            script.setAttribute('data-mode', 'fabio');
+            script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0');
+            script.setAttribute('data-agent-id', 'agt_mSHLSjhZ');
+            iframe.contentDocument.body.appendChild(script);
+        }
+
+        function removeIframe() {
+            var existingIframe = document.getElementById('dynamicIframe');
+            if (existingIframe) {
+                existingIframe.parentNode.removeChild(existingIframe);
+            }
+        }
     </script>
 
     <!-- <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
