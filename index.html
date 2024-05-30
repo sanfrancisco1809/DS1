@@ -193,25 +193,25 @@
         //didAgent.style.display = 'none';
         let desiredElementReference = null;
 
-        function handleElementAdded(mutationsList, observer) {
-            mutationsList.forEach(mutation => {
-                if (mutation.type === 'childList') {
-                    const addedNodes = Array.from(mutation.addedNodes);
-                    addedNodes.forEach(node => {
-                        const desiredElement = node.querySelector('[data-testid="didagent_fabio_button"]');
-                        if (desiredElement) {
-                            desiredElementReference.style.display = "none";
-                            desiredElementReference = desiredElement;
-                        }
-                    });
-                }
-            });
-        }
+        // function handleElementAdded(mutationsList, observer) {
+        //     mutationsList.forEach(mutation => {
+        //         if (mutation.type === 'childList') {
+        //             const addedNodes = Array.from(mutation.addedNodes);
+        //             addedNodes.forEach(node => {
+        //                 const desiredElement = node.querySelector('[data-testid="didagent_fabio_button"]');
+        //                 if (desiredElement) {
+        //                     desiredElementReference.style.display = "none";
+        //                     desiredElementReference = desiredElement;
+        //                 }
+        //             });
+        //         }
+        //     });
+        // }
 
-        const targetNode = document.body;
-        const config = { childList: true, subtree: true };
-        const observer = new MutationObserver(handleElementAdded);
-        observer.observe(targetNode, config);
+        // const targetNode = document.body;
+        // const config = { childList: true, subtree: true };
+        // const observer = new MutationObserver(handleElementAdded);
+        // observer.observe(targetNode, config);
         if (desiredElementReference)
             desiredElementReference.style.display = 'none';
         for (let i = 0; i < didAgent.length; i++) {
@@ -226,6 +226,7 @@
         let sum = 0;
         let animationIntervalList = [];
         let lastHighlighted = null;
+        // const bodyElement = wholeDocument.body;
 
         function pauseMedia() {
             video.pause();
@@ -237,6 +238,7 @@
             animationIntervalList.forEach(item => clearInterval(item));
             animationIntervalList = [];
             //didAgent.style.display = 'block';
+            addScript();
             if (desiredElementReference)
                 desiredElementReference.style.display = 'block';
             for (let i = 0; i < didAgent.length; i++) {
@@ -253,6 +255,7 @@
         }
 
         function resumeMedia() {
+            removeScript();
             if (desiredElementReference)
                 desiredElementReference.style.display = 'none';
             for (let i = 0; i < didAgent.length; i++) {
@@ -498,15 +501,42 @@
 
             }, 55000);
         }
+        function addScript() {
 
+            var existingScript = document.getElementById('didAgentScript');
+            if (!existingScript) {
+
+                var script = document.createElement('script');
+
+                script.type = 'module';
+                script.src = 'https://agent.d-id.com/v1/index.js';
+                script.setAttribute('data-name', 'did-agent');
+                script.setAttribute('data-mode', 'fabio');
+                script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0');
+    script.setAttribute('data-agent-id', 'agt_mSHLSjhZ');
+                script.id = 'didAgentScript';
+
+                document.body.appendChild(script);
+            }
+        }
+
+
+        function removeScript() {
+
+            var script = document.getElementById('didAgentScript');
+
+            if (script) {
+                script.parentNode.removeChild(script);
+            }
+        }
         document.getElementById('pauseImage').addEventListener('click', pauseMedia);
         document.getElementById('resumeButton').addEventListener('click', resumeMedia);
     </script>
 
-    <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
+    <!-- <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
         data-client-key="Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0"
         data-agent-id="agt_mSHLSjhZ">
-        </script>
+        </script> -->
 </body>
 
 </html>
