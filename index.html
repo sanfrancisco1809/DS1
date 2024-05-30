@@ -182,7 +182,7 @@
         const video = document.getElementById('meanVideo');
         const video2a = document.getElementById('meanVideo2a');
         const video2b = document.getElementById('meanVideo2b');
-        const didAgent =document.querySelectorAll('[data-testid="your_test_id"]');// document.getElementsByClassName('didagent_target');
+        const didAgent = document.querySelectorAll('[data-testid="your_test_id"]');// document.getElementsByClassName('didagent_target');
         const pauseImage = document.getElementById('pauseImage');
         const pauseMessage = document.getElementById('pauseMessage');
         const resumeButton = document.getElementById('resumeButton');
@@ -191,6 +191,29 @@
         const linksContainer = document.getElementById('linksContainer');
         //didAgent.classList.add('didAgent');
         //didAgent.style.display = 'none';
+        let desiredElementReference = null;
+
+        function handleElementAdded(mutationsList, observer) {
+            mutationsList.forEach(mutation => {
+                if (mutation.type === 'childList') {
+                    const addedNodes = Array.from(mutation.addedNodes);
+                    addedNodes.forEach(node => {
+                        const desiredElement = node.querySelector('[data-testid="didagent_fabio_button"]');
+                        if (desiredElement) {
+                            desiredElementReference.style.display = "none";
+                            desiredElementReference = desiredElement;
+                        }
+                    });
+                }
+            });
+        }
+
+        const targetNode = document.body;
+        const config = { childList: true, subtree: true };
+        const observer = new MutationObserver(handleElementAdded);
+        observer.observe(targetNode, config);
+        if (desiredElementReference)
+            desiredElementReference.style.display = 'none';
         for (let i = 0; i < didAgent.length; i++) {
             didAgent[i].classList.add('didAgent');
             didAgent[i].style.display = 'none';
@@ -214,6 +237,8 @@
             animationIntervalList.forEach(item => clearInterval(item));
             animationIntervalList = [];
             //didAgent.style.display = 'block';
+            if (desiredElementReference)
+                desiredElementReference.style.display = 'block';
             for (let i = 0; i < didAgent.length; i++) {
                 didAgent[i].style.display = 'block';
             }
@@ -228,6 +253,8 @@
         }
 
         function resumeMedia() {
+            if (desiredElementReference)
+                desiredElementReference.style.display = 'none';
             for (let i = 0; i < didAgent.length; i++) {
                 didAgent[i].style.display = 'block';
             }
