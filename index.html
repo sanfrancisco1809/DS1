@@ -128,7 +128,8 @@
             top: 60%;
             width: 400px;
             height: auto;
-            display: none;
+            /* display: none; */
+            border: 1px solid black;
         }
     </style>
 </head>
@@ -177,7 +178,7 @@
         <p>Type out your question in the chat window or click on the mic to ask your question.</p>
         <button id="resumeButton">Resume</button>
     </div>
-    <div id="iframeContainer" class = "didAgent"></div>
+    <div id="iframeContainer" class="did-Agent"></div>
     <script>
         const video = document.getElementById('meanVideo');
         const video2a = document.getElementById('meanVideo2a');
@@ -468,21 +469,23 @@
         function addIframe() {
             var iframe = document.createElement('iframe');
             iframe.id = 'dynamicIframe';
-            iframe.style.width = '100%';
-            iframe.style.height = '400px';
-
+            // iframe.style.width = '100%';
+            // iframe.style.height = '400px';
+            iframe.classList.add('didAgent');
             iframe.srcdoc = '<!DOCTYPE html><html><head></head><body></body></html>';
 
-            document.getElementById('iframeContainer').appendChild(iframe);
+            iframe.onload = function () {
+                var script = document.createElement('script');
+                script.type = 'module';
+                script.src = 'https://agent.d-id.com/v1/index.js';
+                script.setAttribute('data-name', 'did-agent');
+                script.setAttribute('data-mode', 'fabio');
+                script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0');
+                script.setAttribute('data-agent-id', 'agt_mSHLSjhZ');
+                iframe.contentDocument.body.appendChild(script);
+            };
 
-            var script = document.createElement('script');
-            script.type = 'module';
-            script.src = 'https://agent.d-id.com/v1/index.js';
-            script.setAttribute('data-name', 'did-agent');
-            script.setAttribute('data-mode', 'fabio');
-            script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0');
-            script.setAttribute('data-agent-id', 'agt_mSHLSjhZ');
-            iframe.contentDocument.body.appendChild(script);
+            document.getElementById('iframeContainer').appendChild(iframe);
         }
 
         function removeIframe() {
