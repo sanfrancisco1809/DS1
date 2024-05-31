@@ -19,6 +19,10 @@
             background-color: #FFF1D7;
         }
 
+        .didagent__branding_footer {
+            opacity: 0 !important;
+        }
+
         .highlight,
         .formula,
         .fraction,
@@ -217,9 +221,9 @@
             video.pause();
             video.style.display = 'none';
             video2a.pause();
-            video.style.display = 'none';
+            video2a.style.display = 'none';
             video2b.pause();
-            video.style.display = 'none';
+            video2b.style.display = 'none';
             animationIntervalList.forEach(item => clearInterval(item));
             animationIntervalList = [];
             // didAgent.style.display = 'block';
