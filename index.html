@@ -19,10 +19,6 @@
             background-color: #FFF1D7;
         }
 
-        .didagent__branding_footer {
-            opacity: 0 !important;
-        }
-
         .highlight,
         .formula,
         .fraction,
@@ -140,10 +136,17 @@
             position: fixed;
             right: 0;
             bottom: 0;
-            z-index: 9999;
             width: 20rem;
             height: 15rem;
             background-color: #fff1d7;
+        }
+        .didAgent-footer-mask{
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            background-color: #fff1d7;
+            height:2.7rem; 
+            width:30rem;
         }
     </style>
 </head>
@@ -194,6 +197,7 @@
     </div>
     <div id="iframeContainer" class="did-Agent"></div>
     <div id="didAgentMask" class="didAgent-mask"></div>
+    <div id="didAgent-footer-mask" class="didAgent-footer-mask"></div>
     <script>
         const video = document.getElementById('meanVideo');
         const video2a = document.getElementById('meanVideo2a');
@@ -206,6 +210,7 @@
         const continueButton = document.getElementById('continueButton');
         const linksContainer = document.getElementById('linksContainer');
         const didAgentMask = document.getElementById('didAgentMask');
+        const didAgentFooterMask = document.getElementById('didAgent-footer-mask');
         // didAgent.classList.add('didAgent');
         let timers = [];
         let pausedTimers = [];
@@ -218,12 +223,13 @@
 
         function pauseMedia() {
             // addIframe();
+            didAgentFooterMask.style.display = "block"
             video.pause();
             video.style.display = 'none';
             video2a.pause();
-            video2a.style.display = 'none';
+            video.style.display = 'none';
             video2b.pause();
-            video2b.style.display = 'none';
+            video.style.display = 'none';
             animationIntervalList.forEach(item => clearInterval(item));
             animationIntervalList = [];
             // didAgent.style.display = 'block';
@@ -241,6 +247,7 @@
         function resumeMedia() {
             // removeIframe();
             // didAgent.style.display = 'none';
+            didAgentFooterMask.style.display = "none"
             didAgentMask.style.display = 'block';
             if (video2a.style.display === 'none' && video2a.currentTime > 0 && !video2a.paused && !video2a.ended) {
                 video2a.play();
@@ -487,10 +494,10 @@
 
     </script>
 
-    <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
+    <!-- <script type="module" src="https://agent.d-id.com/v1/index.js" data-name="did-agent" data-mode="fabio"
         data-client-key="Z29vZ2xlLW9hdXRoMnwxMDEyNTM3MTA4MTkyOTU5NDEyNjA6WGdmNkdPZUJYalo0dlU4Yko0UFU0"
         data-agent-id="agt_mSHLSjhZ">
-        </script>
+        </script> -->
 </body>
 
 </html>
