@@ -14,7 +14,7 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            min-height: 100vh;
+            min-height: 94vh;
             text-align: center;
             background-color: #FFF1D7;
         }
@@ -30,6 +30,7 @@
         #formulaContainer {
             font-size: 24px;
             font-style: bold;
+            z-index: 500;
         }
 
         .highlight {
@@ -59,6 +60,10 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
+            align-self: flex-start;
+            position: absolute;
+            top:1.5rem;
+            width: calc(100% - 2.5rem);
         }
 
         .hidden {
@@ -93,11 +98,11 @@
         #meanVideo,
         #meanVideo2a,
         #meanVideo2b {
-            position: absolute;
+            position: fixed;
             left: -50px;
-            top: 60%;
-            width: 400px;
-            transform: translateY(-10%);
+            bottom: 0;
+            width: 40%;
+            max-width: 400px;
         }
 
         #pauseImage {
@@ -142,13 +147,14 @@
             z-index: 9999;
             background-color: #fff1d7;
         }
+
         .didAgent-footer-mask {
             position: fixed;
             right: 0;
             bottom: 0;
             background-color: #fff1d7;
-            height:2.7rem; 
-            width:30rem;
+            height: 2.7rem;
+            width: 30rem;
             z-index: 9999;
         }
     </style>
@@ -221,6 +227,7 @@
         let isPaused = false;
         let pauseIndex = -1;
         let sum = 0;
+        let videoToPlay = 0;
         let animationIntervalList = [];
         let lastHighlighted = null;
 
@@ -252,13 +259,14 @@
             // didAgent.style.display = 'none';
             didAgentFooterMask.style.display = "none"
             didAgentMask.style.display = 'block';
-            if (video2a.style.display === 'none' && video2a.currentTime > 0 && !video2a.paused && !video2a.ended) {
-                video2a.play();
-                video2a.style.display = 'block';
-            } else if (video2b.style.display === 'none' && video2b.currentTime > 0 && !video2b.paused && !video2b.ended) {
+            debugger
+            if (videoToPlay === 2) {
                 video2b.play();
                 video2b.style.display = 'block';
-            } else {
+            } else if (videoToPlay === 1) {
+                video2a.play();
+                video2a.style.display = 'block';
+            } else if (videoToPlay === 0) {
                 video.play();
                 video.style.display = 'block';
             }
@@ -284,9 +292,11 @@
 
         function initializeTimers() {
             clearTimers();
-            setCustomTimeout(() => {
-                continueButton.classList.remove('hidden');
-            }, 60000);
+            if (videoToPlay !== 2) {
+                setCustomTimeout(() => {
+                    continueButton.classList.remove('hidden');
+                }, 60000);
+            }
         }
 
         startButton.addEventListener('click', () => {
@@ -300,16 +310,20 @@
             initializeTimers();
             sum = 0;
             pauseIndex = -1;
+            videoToPlay = 0;
+            console.log("start button clicked")
             animateMeanCalculation(dataSet);
         });
 
         continueButton.addEventListener('click', () => {
+            videoToPlay += 1;
             continueButton.classList.add('hidden');
             numberRange.innerHTML = '';
             const newDataSet = [2.5, 5.5, 14.2, 24.3, 45, 80.4];
             numberRange.classList.remove('hidden');
             pauseIndex = -1;
             sum = 0;
+            console.log("continue button click")
 
             video2a.currentTime = 0;
             video2b.currentTime = 0;
@@ -319,6 +333,7 @@
             video2a.onended = () => {
                 video2a.style.display = 'none';
                 video2b.style.display = 'block';
+                videoToPlay += 1;
                 video2b.play();
             };
 
@@ -345,6 +360,7 @@
             animationContainer.innerHTML = '';
             calculationContainer.innerHTML = '';
             calculationContainer.classList.add('hidden');
+            animationContainer.style.display = "flex"
 
             setCustomTimeout(() => {
                 if (!isPaused) {
@@ -444,11 +460,13 @@
             //const sum = dataSet.reduce((acc, val) => acc + val, 0);
             const count = dataSet.length;
             const mean = sum / count;
+            const animationContainer = document.getElementById('animationContainer');
             //removeContainer.classList.add('hidden');
             container.classList.remove('hidden');
 
             setCustomTimeout(() => {
                 if (!isPaused) {
+                    animationContainer.style.display = "none"
                     container.classList.remove('hidden');
                     container.innerHTML = `Sum = ${sum}<br/><br/>Count = ${count}<br/><br/>`;
                 }
